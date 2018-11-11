@@ -58,6 +58,8 @@ let index = {
         astilectron.onMessage(function(message) {
                 if ( "update" === message.name ) {
                         index.update(message.payload)
+                } else if ( "complete" === message.name ) {
+                    index.update("Finished downloading media export!");
                 } else {
         	        index.append(JSON.stringify(message))
                 }

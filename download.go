@@ -97,6 +97,7 @@ func download(url, to string) error {
 			break
 		}
 	}
+	sendMessage("complete", "finished downloading media export...");
 	return nil
 }
 
