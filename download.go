@@ -111,8 +111,8 @@ func head(url string) int {
 	if err != nil {
 		log.Fatalf("Error reading or parsing Content-Length of '%s': %s", rsp.Header.Get("Content-Length"), err.Error())
 	}
-	//if "bytes" != rsp.Header.Get("Accept-Ranges") {
-	//	log.Fatal("Missing valid Accept-Ranges header")
-	//}
+	if "bytes" != rsp.Header.Get("Accept-Ranges") {
+		log.Fatal("Missing valid Accept-Ranges header")
+	}
 	return intLen
 }
