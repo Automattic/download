@@ -82,8 +82,6 @@ let index = {
     },
     listen: function() {
         astilectron.onMessage(function(message) {
-            console.log( message );
-            console.log( message.payload );
             if ( "update" === message.name ) {
                 if ( 'string' === typeof message.payload ) {
                     index.update( message.payload );
