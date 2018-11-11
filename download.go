@@ -48,8 +48,10 @@ func (p *progressBar) update() {
 	}
 	sendMessage(
 		"update",
-		fmt.Sprintf(
-			`{"msg": "%s", "pct": %2d}`,
+		struct {
+			Msg string `json:"msg"`
+			Pct int    `json:"pct"`
+		} {
 			fmt.Sprintf(
 				"%2d%% Downloaded: %s of %s (%s/sec)",
 				pct,
@@ -58,7 +60,7 @@ func (p *progressBar) update() {
 				humanize.Bytes(uint64(p.snapRate)),
 			),
 			pct,
-		),
+		},
 	)
 }
 

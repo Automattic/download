@@ -82,20 +82,20 @@ let index = {
     },
     listen: function() {
         astilectron.onMessage(function(message) {
-                if ( "update" === message.name ) {
-                    try {
-                        const payload = JSON.parse( message.payload );
-                        index.update( payload.msg, { pct: payload.pct } );
-                    } catch ( e ) {
-                        // invalid payload
-                    }
-                } else if ( "complete" === message.name ) {
-                    index.update("Finished downloading media export!");
+            console.log( message );
+            console.log( message.payload );
+            if ( "update" === message.name ) {
+                if ( 'string' === typeof message.payload ) {
+                    index.update( message.payload );
                 } else {
-        	        index.append(JSON.stringify(message))
+                    index.update( message.payload.msg, message.payload );
                 }
-                // {"name":"update","payload":"got request for download"}
-
+            } else if ( "complete" === message.name ) {
+                index.update("Finished downloading media export!");
+            } else {
+                index.append(JSON.stringify(message))
+            }
+            // {"name":"update","payload":"got request for download"}
         });
     },
     // match go/humanize
