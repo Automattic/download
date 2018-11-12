@@ -1,8 +1,14 @@
 let index = {
     isDownloading: false,
-	update: function( msg ) {
+	update: function( message, data ) {
 		let div = document.getElementById("update-status");
-		div.innerHTML = msg;
+        div.innerHTML = message;
+
+        if ( data && data .pct ) {
+            document
+                .querySelector( '#download-progress' )
+                .setAttribute( 'value', data.pct );
+        }
 	},
     append: function( msg ) {
         let div = document.createElement("div");
@@ -64,6 +70,7 @@ let index = {
             	index.update("OK. Attempting to download")
             	document.getElementById("download-button").disabled = true;
             }
+            document.querySelector('#download-progress').removeAttribute('style');
             index.send("download", { url: document.getElementById("url-input").value, save: path })
     	});
     },
@@ -75,15 +82,18 @@ let index = {
     },
     listen: function() {
         astilectron.onMessage(function(message) {
-                if ( "update" === message.name ) {
-                        index.update(message.payload)
-                } else if ( "complete" === message.name ) {
-                    index.update("Finished downloading media export!");
+            if ( "update" === message.name ) {
+                if ( 'string' === typeof message.payload ) {
+                    index.update( message.payload );
                 } else {
-        	        index.append(JSON.stringify(message))
+                    index.update( message.payload.msg, message.payload );
                 }
-                // {"name":"update","payload":"got request for download"}
-
+            } else if ( "complete" === message.name ) {
+                index.update("Finished downloading media export!");
+            } else {
+                index.append(JSON.stringify(message))
+            }
+            // {"name":"update","payload":"got request for download"}
         });
     },
     // match go/humanize
