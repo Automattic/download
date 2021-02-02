@@ -55,8 +55,13 @@ func main() {
 			},
 		},
 		OnWait: func(a *astilectron.Astilectron, ww []*astilectron.Window, m *astilectron.Menu, t *astilectron.Tray, tm *astilectron.Menu) error {
-			log.Println(ww)
 			w = ww[0]
+			if *debug {
+				log.Println(ww)
+				log.Println(w)
+				w.Resize(1400, 1400)
+				w.OpenDevTools()
+			}
 			return nil
 		},
 		RestoreAssets: RestoreAssets,
@@ -64,6 +69,9 @@ func main() {
 			Homepage:       "index.html",
 			MessageHandler: handleMessages,
 			Options: &astilectron.WindowOptions{
+				WebPreferences: &astilectron.WebPreferences{
+					EnableRemoteModule: astikit.BoolPtr(true),
+				},
 				BackgroundColor: astikit.StrPtr("#333"),
 				Center:          astikit.BoolPtr(true),
 				Height:          astikit.IntPtr(200),

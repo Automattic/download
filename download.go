@@ -51,7 +51,7 @@ func (p *progressBar) update() {
 		struct {
 			Msg string `json:"msg"`
 			Pct int    `json:"pct"`
-		} {
+		}{
 			fmt.Sprintf(
 				"%2d%% Downloaded: %s of %s (%s/sec)",
 				pct,
@@ -66,7 +66,7 @@ func (p *progressBar) update() {
 
 func download(url, to string) error {
 	sendMessage("update", "got request for download")
-	bytes := int64(head(url))
+	var bytes int64
 	fp, err := os.OpenFile(to, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
@@ -89,6 +89,14 @@ func download(url, to string) error {
 		b, _ := httputil.DumpRequestOut(req, false)
 		os.Stderr.Write(b)
 		rsp, err := http.DefaultClient.Do(req)
+		if bytes == 0 {
+			if b, err := strconv.Atoi(rsp.Header.Get("Content-Length")); err != nil {
+				log.Fatalf("Error reading or parsing Content-Length of '%s': %s", rsp.Header.Get("Content-Length"), err.Error())
+			} else {
+				bytes = int64(b)
+				p.total = bytes
+			}
+		}
 		if rsp.StatusCode == 200 || rsp.StatusCode == 206 {
 			if err != nil {
 				log.Fatalf("Error requesting %s at byte offset %d: %s", url, read, err.Error())
@@ -103,23 +111,6 @@ func download(url, to string) error {
 			break
 		}
 	}
-	sendMessage("complete", "finished downloading media export...");
+	sendMessage("complete", "finished downloading media export...")
 	return nil
-}
-
-func head(url string) int {
-	sendMessage("update", "making head request...")
-	rsp, err := http.Head(url)
-	if err != nil {
-		log.Fatalf("Error making HEAD request to %s: %s", url, err.Error())
-	}
-	defer rsp.Body.Close()
-	intLen, err := strconv.Atoi(rsp.Header.Get("Content-Length"))
-	if err != nil {
-		log.Fatalf("Error reading or parsing Content-Length of '%s': %s", rsp.Header.Get("Content-Length"), err.Error())
-	}
-	if "bytes" != rsp.Header.Get("Accept-Ranges") {
-		log.Fatal("Missing valid Accept-Ranges header")
-	}
-	return intLen
 }

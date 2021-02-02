@@ -19,3 +19,4 @@ bind_windows_amd64.go
 windows.sysco
 windows.syso
 output
+test
