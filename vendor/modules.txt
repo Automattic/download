@@ -1,0 +1,32 @@
+# github.com/akavel/rsrc v0.10.1
+## explicit
+github.com/akavel/rsrc/binutil
+github.com/akavel/rsrc/coff
+github.com/akavel/rsrc/ico
+github.com/akavel/rsrc/internal
+github.com/akavel/rsrc/rsrc
+# github.com/asticode/go-astikit v0.16.0
+## explicit
+github.com/asticode/go-astikit
+# github.com/asticode/go-astilectron v0.22.3
+## explicit
+github.com/asticode/go-astilectron
+# github.com/asticode/go-astilectron-bootstrap v0.4.10
+## explicit
+github.com/asticode/go-astilectron-bootstrap
+# github.com/asticode/go-astilectron-bundler v0.7.8
+## explicit
+github.com/asticode/go-astilectron-bundler
+# github.com/asticode/go-astilog v1.8.0
+## explicit
+github.com/asticode/go-astilog
+# github.com/asticode/go-bindata v1.0.0
+github.com/asticode/go-bindata
+# github.com/dustin/go-humanize v1.0.0
+## explicit
+github.com/dustin/go-humanize
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/sam-kamerer/go-plister v1.2.0
+github.com/sam-kamerer/go-plister
