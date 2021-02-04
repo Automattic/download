@@ -45,7 +45,9 @@ let index = {
     	let url = document.getElementById("url-input").value;
 
     	let defaultFileName = new String(url).substring(url.lastIndexOf('/') + 1);
-    	index.update( "c -- " + url + "<br/>" + defaultFileName )
+    	if ( /^https:\/\/public-api.wordpress.com\/rest\/v\d+.\d+\/sites\/\d+\/exports\/media-download/.test(url) ) {
+    		defaultFileName = url.split('/')[6] + '.tar'
+    	}
     	let path = dialog.showSaveDialogSync({defaultPath: defaultFileName})
         // asticode.loader.hide();
         if ( undefined === path ) {
