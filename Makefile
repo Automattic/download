@@ -8,7 +8,7 @@ try-exec:
 	cp output/darwin-amd64/Download.app/Contents/MacOS/Download test/download
 	cd test/ && ./download -d
 
-dist: darwin linux windows
+dist: clean darwin linux windows
 
 darwin:
 	astilectron-bundler -d -c bundler.json
@@ -29,6 +29,9 @@ dist-release:
 	cd output/windows-amd64/ && zip windows-amd64-Download.exe.zip Download.exe
 	mv output/windows-amd64/windows-amd64-Download.exe.zip release/
 
+clean:
+	-rm -rv release output test
+	-rm bind_darwin_amd64.go bind_linux_amd64.go bind_windows_amd64.go windows.syso
 
 prep:
 	go get -u github.com/asticode/go-astilectron-bundler/...

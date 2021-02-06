@@ -41,10 +41,12 @@ func (p *progressBar) update() {
 	pct := int(float32(p.current) / float32(p.total) * 100)
 	now := time.Now()
 	since := time.Now().Sub(p.snapTime)
-	if since > time.Second {
+	if since > (time.Second / 10) {
 		p.snapRate = p.round(float64(p.current-p.snapBytes) / since.Seconds())
 		p.snapTime = now
 		p.snapBytes = p.current
+	} else {
+		return
 	}
 	sendMessage(
 		"update",
@@ -76,8 +78,29 @@ func download(url, to string) error {
 	p := new(progressBar)
 	p.total = bytes
 	p.current = read
+	attempt := 0
 
+	sendMessage("update", struct {
+		Msg string `json:"msg"`
+	}{"Initiating download"})
 	for {
+		if attempt > 1 {
+			sendMessage(
+				"update",
+				struct {
+					Msg string `json:"msg"`
+				}{
+					fmt.Sprintf(
+						"Download timed out. Attempting retry %d at %d bytes (%d%%)",
+						attempt,
+						p.current,
+						int(float32(p.current)/float32(p.total)*100),
+					),
+				},
+			)
+
+		}
+		attempt++
 		req, err := http.NewRequest(http.MethodGet, url, nil)
 		if err != nil {
 			log.Fatalf("Error preparing request to %s: %s", url, err.Error())
@@ -95,6 +118,9 @@ func download(url, to string) error {
 			} else {
 				bytes = int64(b)
 				p.total = bytes
+				sendMessage("update", struct {
+					Msg string `json:"msg"`
+				}{"Receiving data"})
 			}
 		}
 		if rsp.StatusCode == 200 || rsp.StatusCode == 206 {
