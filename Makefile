@@ -9,11 +9,11 @@ fyne:
 
 release:
 	@rm -rf fyne-cross
-	fyne-cross darwin -app-id com.automattic.downloader -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
-	fyne-cross windows -app-id com.automattic.downloader -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
-	cd fyne-cross/dist/darwin-amd64 && zip -r ../downloader-mac-amd64.zip downloader.app
-	cd fyne-cross/dist/darwin-arm64 && zip -r ../downloader-mac-arm64.zip downloader.app
-	mv fyne-cross/dist/windows-arm64/downloader.exe.zip fyne-cross/dist/downloader-windows-arm64.zip
-	mv fyne-cross/dist/windows-amd64/downloader.exe.zip fyne-cross/dist/downloader-windows-amd64.zip
-	mv fyne-cross/dist/windows-386/downloader.exe.zip fyne-cross/dist/downloader-windows-i386.zip
+	fyne-cross darwin -app-id com.automattic.download -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
+	fyne-cross windows -app-id com.automattic.download -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
+	cd fyne-cross/dist/darwin-amd64 && zip -r ../download-mac-amd64.zip download.app
+	cd fyne-cross/dist/darwin-arm64 && zip -r ../download-mac-arm64.zip download.app
+	mv fyne-cross/dist/windows-arm64/download.exe.zip fyne-cross/dist/download-windows-arm64.zip
+	mv fyne-cross/dist/windows-amd64/download.exe.zip fyne-cross/dist/download-windows-amd64.zip
+	mv fyne-cross/dist/windows-386/download.exe.zip fyne-cross/dist/download-windows-i386.zip
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64 fyne-cross/dist/windows-arm64 fyne-cross/dist/windows-amd64 fyne-cross/dist/windows-386
