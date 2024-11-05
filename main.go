@@ -1,84 +1,124 @@
 package main
 
 import (
-	"flag"
-	"log"
+	"fmt"
+	"net/url"
 
-	astikit "github.com/asticode/go-astikit"
-	"github.com/asticode/go-astilectron"
-	bootstrap "github.com/asticode/go-astilectron-bootstrap"
-	"github.com/asticode/go-astilog"
-	"github.com/pkg/errors"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
+	"fyne.io/fyne/v2/widget"
 )
 
-// Vars
 var (
-	AppName string
-	BuiltAt string
-	debug   = flag.Bool("d", false, "enables the debug mode")
-	w       *astilectron.Window
+	downloadURL          string
+	saveAs               string
+	application          fyne.App
+	window               fyne.Window
+	widgetDownloadURL    *widget.Entry
+	widgetProgressBar    *widget.ProgressBar
+	widgetDownloadButton *widget.Button
+	sizeNormal           = fyne.NewSize(1024, 256)
+	sizeSave             = fyne.NewSize(1024, 512)
+	localDownloader      *downloader
 )
 
 func main() {
-	// Init
-	flag.Parse()
-	l := astilog.NewFromFlags()
+	application = app.NewWithID("AutomatticDownloaderApplication")
+	application.Settings().SetTheme(theme.LightTheme())
 
-	// Run bootstrap
-	l.Debugf("Running app built at %s", BuiltAt)
-	if err := bootstrap.Run(bootstrap.Options{
-		Asset:    Asset,
-		AssetDir: AssetDir,
-		AstilectronOptions: astilectron.Options{
-			AppName:            AppName,
-			AppIconDarwinPath:  "resources/icon.icns",
-			AppIconDefaultPath: "resources/icon.png",
-		},
-		Debug: *debug,
-		MenuOptions: []*astilectron.MenuItemOptions{
-			{
-				Label: astikit.StrPtr("File"),
-				SubMenu: []*astilectron.MenuItemOptions{
-					{Role: astilectron.MenuItemRoleClose},
-				},
-			},
-			{
-				Label: astikit.StrPtr("Edit"),
-				SubMenu: []*astilectron.MenuItemOptions{
-					{Role: astilectron.MenuItemRoleCopy},
-					{Role: astilectron.MenuItemRoleCut},
-					{Role: astilectron.MenuItemRolePaste},
-					{Role: astilectron.MenuItemRoleDelete},
-					{Role: astilectron.MenuItemRoleUndo},
-					{Role: astilectron.MenuItemRoleRedo},
-				},
-			},
-		},
-		OnWait: func(a *astilectron.Astilectron, ww []*astilectron.Window, m *astilectron.Menu, t *astilectron.Tray, tm *astilectron.Menu) error {
-			w = ww[0]
-			if *debug {
-				log.Println(ww)
-				log.Println(w)
-				w.Resize(1400, 1400)
-				w.OpenDevTools()
-			}
-			return nil
-		},
-		RestoreAssets: RestoreAssets,
-		Windows: []*bootstrap.Window{{
-			Homepage:       "index.html",
-			MessageHandler: handleMessages,
-			Options: &astilectron.WindowOptions{
-				WebPreferences: &astilectron.WebPreferences{
-					EnableRemoteModule: astikit.BoolPtr(true),
-				},
-				BackgroundColor: astikit.StrPtr("#333"),
-				Center:          astikit.BoolPtr(true),
-				Height:          astikit.IntPtr(200),
-				Width:           astikit.IntPtr(700),
-			},
-		}},
-	}); err != nil {
-		l.Fatal(errors.Wrap(err, "running bootstrap failed"))
+	window = application.NewWindow("Downloader")
+	window.Resize(sizeNormal)
+
+	widgetDownloadURL = widget.NewEntry()
+	widgetDownloadURL.SetPlaceHolder("Enter download URL")
+	widgetDownloadURL.OnChanged = func(newDownloadURL string) {
+		downloadURL = newDownloadURL
 	}
+	// when developing... this is helpful
+	// widgetDownloadURL.SetText("https://cdimage.debian.org/debian-cd/current/amd64/iso-bd/debian-edu-12.7.0-amd64-BD-1.iso")
+
+	widgetProgressBar = widget.NewProgressBar()
+	widgetProgressBar.Min = 0
+	widgetProgressBar.Max = 100
+	widgetProgressBar.Hide()
+
+	widgetDownloadButton = widget.NewButton(
+		"Download Now",
+		func() {
+			widgetDownloadButton.Disable()
+			widgetDownloadURL.Disable()
+			defer widgetDownloadButton.Enable()
+			defer widgetDownloadURL.Enable()
+			if localDownloader == nil || localDownloader.URL != downloadURL {
+				localDownloader = newDownloader(downloadURL)
+			}
+			window.Resize(sizeSave)
+			window.SetTitle("Downloader - Choose a folder to save the file into")
+			dialog.ShowFolderOpen(
+				func(choice fyne.ListableURI, err error) {
+					window.Resize(sizeNormal)
+					if err != nil {
+						window.SetTitle("Downloader - SaveAborted")
+						dialog.ShowError(err, window)
+						return
+					}
+					if choice == nil {
+						window.SetTitle("Downloader - SaveAborted")
+						return
+					}
+					toURL, err := url.Parse(choice.String())
+					if err != nil {
+						dialog.ShowError(err, window)
+						return
+					}
+					widgetProgressBar.Show()
+
+					err = localDownloader.downloadToWithBytesCallback(
+						toURL.Path,
+						func(downloaded int64, total int64) {
+							window.SetTitle(
+								fmt.Sprintf(
+									"Downloading - %s %s/%s",
+									localDownloader.Filename,
+									niceByteString(downloaded),
+									niceByteString(localDownloader.HeadResponse.Bytes),
+								),
+							)
+							widgetProgressBar.SetValue(float64(downloaded))
+						},
+					)
+					if err != nil {
+						dialog.ShowError(err, window)
+						return
+					}
+					window.SetTitle(
+						fmt.Sprintf(
+							"Download Complete - %s %s/%s",
+							localDownloader.Filename,
+							niceByteString(localDownloader.BytesSaved),
+							niceByteString(localDownloader.HeadResponse.Bytes),
+						),
+					)
+				},
+				window,
+			)
+		},
+	)
+
+	vbox := container.NewVBox(
+		layout.NewSpacer(),
+		widgetDownloadURL,
+		widgetDownloadButton,
+		layout.NewSpacer(),
+		widgetProgressBar,
+		layout.NewSpacer(),
+	)
+
+	window.SetContent(vbox)
+
+	window.ShowAndRun()
 }
