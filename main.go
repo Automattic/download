@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -77,20 +78,36 @@ func main() {
 					}
 					widgetProgressBar.Show()
 
-					err = localDownloader.downloadToWithBytesCallback(
-						toURL.Path,
-						func(downloaded int64, total int64) {
+					for i := 0; i < 8192; i++ {
+						if i > 0 {
 							window.SetTitle(
 								fmt.Sprintf(
-									"Downloading - %s %s/%s",
+									"Retrying - %s %s/%s",
 									localDownloader.Filename,
-									niceByteString(downloaded),
+									niceByteString(localDownloader.BytesSaved),
 									niceByteString(localDownloader.HeadResponse.Bytes),
 								),
 							)
-							widgetProgressBar.SetValue(float64(downloaded))
-						},
-					)
+							time.Sleep(time.Second)
+						}
+						err = localDownloader.downloadToWithBytesCallback(
+							toURL.Path,
+							func(downloaded int64, total int64) {
+								window.SetTitle(
+									fmt.Sprintf(
+										"Downloading - %s %s/%s",
+										localDownloader.Filename,
+										niceByteString(downloaded),
+										niceByteString(localDownloader.HeadResponse.Bytes),
+									),
+								)
+								widgetProgressBar.SetValue(float64(downloaded))
+							},
+						)
+						if err == nil {
+							break
+						}
+					}
 					if err != nil {
 						dialog.ShowError(err, window)
 						return
@@ -103,6 +120,8 @@ func main() {
 							niceByteString(localDownloader.HeadResponse.Bytes),
 						),
 					)
+					widgetDownloadButton.Hide()
+					time.Sleep(24 * 365 * time.Hour)
 				},
 				window,
 			)

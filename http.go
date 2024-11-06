@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/md5"
 	"fmt"
 	"io"
 	"mime"
@@ -26,6 +27,7 @@ type downloader struct {
 	URL          string
 	Filename     string
 	BytesSaved   int64
+	TempName     string
 	HeadResponse *downloadHeadRequest
 }
 
@@ -35,6 +37,22 @@ func (d *downloader) downloadToWithBytesCallback(to string, callback func(int64,
 	if err != nil {
 		return err
 	}
+
+	tempPath := filepath.Clean(fmt.Sprintf("/%s/%s", to, d.TempName))
+	openFileArgs := os.O_CREATE | os.O_RDWR
+	fp, err := os.OpenFile(tempPath, openFileArgs, 0644)
+	if fp != nil {
+		defer fp.Close()
+	}
+	if err != nil {
+		return err
+	}
+	info, err := fp.Stat()
+	if err != nil {
+		return err
+	}
+	d.BytesSaved = info.Size()
+
 	req.Header.Set("Range", fmt.Sprintf("bytes=%d-", d.BytesSaved))
 	rsp, err := http.DefaultClient.Do(req)
 	if rsp != nil && rsp.Body != nil {
@@ -51,28 +69,13 @@ func (d *downloader) downloadToWithBytesCallback(to string, callback func(int64,
 		d.processGetResponseHeaders(rsp)
 	}
 
-	filePath := filepath.Clean(fmt.Sprintf("/%s/%s", to, d.Filename))
-	openFileArgs := os.O_CREATE | os.O_TRUNC | os.O_WRONLY
-
-	if rsp.StatusCode == 206 {
-		openFileArgs = os.O_APPEND | os.O_CREATE | os.O_WRONLY
-	}
-
-	fp, err := os.OpenFile(filePath, openFileArgs, 0644)
-	if fp != nil {
-		defer fp.Close()
-	}
-	if err != nil {
-		return err
-	}
-	info, err := fp.Stat()
-	if err != nil {
-		return err
-	}
-	d.BytesSaved = info.Size()
-
-	if rsp.StatusCode == 206 {
+	if rsp.StatusCode != 206 {
+		fp.Seek(0, 0)
+		fp.Truncate(0)
+		d.BytesSaved = 0
+	} else {
 		d.HeadResponse.Bytes = d.HeadResponse.Bytes + d.BytesSaved
+		fp.Seek(0, 2)
 	}
 	widgetProgressBar.Max = float64(d.HeadResponse.Bytes)
 
@@ -86,7 +89,12 @@ func (d *downloader) downloadToWithBytesCallback(to string, callback func(int64,
 		},
 	)
 	_, err = io.Copy(writer, rsp.Body)
-	return err
+	if err != nil {
+		return err
+	}
+	fp.Close()
+	filePath := filepath.Clean(fmt.Sprintf("/%s/%s", to, d.Filename))
+	return os.Rename(tempPath, filePath)
 }
 
 func (d *downloader) processGetResponseHeaders(rsp *http.Response) {
@@ -121,12 +129,13 @@ func (d *downloader) processGetResponseHeaders(rsp *http.Response) {
 			d.Filename = filename
 		}
 	}
-
 }
 
 func newDownloader(downloadURL string) *downloader {
+
 	var rval = &downloader{
-		URL: downloadURL,
+		URL:      downloadURL,
+		TempName: fmt.Sprintf("%x-download.tmp", md5.Sum([]byte(downloadURL))),
 	}
 	if u, err := url.Parse(downloadURL); err == nil {
 		if parsedFilename := filepath.Base(u.Path); parsedFilename != "/" && parsedFilename != "." {
