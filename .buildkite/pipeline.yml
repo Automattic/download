@@ -2,6 +2,9 @@ steps:
   - label: Hello world
     command: |
       brew install go
+      # This should call make fyne internally, and does so on a local machine..
+      # make release-mac
+      make fyne
       make release-mac
     notify:
       - github_commit_status:
