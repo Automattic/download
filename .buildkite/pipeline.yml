@@ -1,14 +1,9 @@
 steps:
   - label: Hello world
-    command: |
-      brew install go
-      # This should call make fyne internally, and does so on a local machine..
-      # make release-mac
-      make fyne
-      make release-mac
+    command: .buildkite/release-mac.sh
     notify:
       - github_commit_status:
-          context: "macOS Build"
+          context: macOS Build
     agents:
       queue: mac
     env:
