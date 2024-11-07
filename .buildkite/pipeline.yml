@@ -1,6 +1,8 @@
 steps:
   - label: Hello world
-    command: make release-mac
+    command: |
+      brew install go
+      make release-mac
     notify:
       - github_commit_status:
           context: "macOS Build"
