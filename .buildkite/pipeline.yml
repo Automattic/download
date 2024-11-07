@@ -1,6 +1,12 @@
 steps:
   - label: Hello world
-    command: echo 'Hellow, world!'
+    command: make release-mac
     notify:
       - github_commit_status:
-          context: "Hello, world"
+          context: "macOS Build"
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: xcode-16.1
+    artifact_paths:
+      - fyne-cross/dist/**/*.zip
