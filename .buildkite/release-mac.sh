@@ -15,7 +15,7 @@ brew install docker
 echo "~~~ Install colima"
 brew install colima
 echo "~~~ Start"
-brew services start colima
+"$HOMEBREW_PREFIX/opt/colima/bin/colima" start --runtime docker
 echo "~~~ Verify setup"
 docker version
 docker ps
