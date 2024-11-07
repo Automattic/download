@@ -14,10 +14,9 @@ echo "~~~ Install Docker"
 brew install docker
 echo "~~~ Install colima"
 brew install colima
-echo "~~~ Verify colima permissions"
-ls -la "$HOME/.colima"
-brew install colima
-echo "~~~ Start"
+# echo "~~~ Verify colima permissions"
+# ls -la "$HOME/.colima"
+echo "~~~ Start colima"
 "$HOMEBREW_PREFIX/opt/colima/bin/colima" start --runtime docker
 echo "~~~ Verify Docker setup"
 docker version
