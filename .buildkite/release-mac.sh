@@ -3,5 +3,8 @@
 echo "--- :go: Installing Go"
 brew install go
 
+echo "--- :bug: Print debug info"
+which go
+
 echo "--- :package: Packaging for macOS"
 make release-mac
