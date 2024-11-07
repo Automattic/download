@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -u
 
 echo "--- :go: Installing Go"
 echo "~~~ Install Go"
@@ -27,6 +27,8 @@ echo "~~~ [Workaround attempt] Delete colima settings"
 /opt/homebrew/opt/colima/bin/colima delete --force
 echo "~~~ Start colima"
 /opt/homebrew/opt/colima/bin/colima start --runtime docker
+echo "~~~ Print logs from expected failure"
+cat /Users/builder/.colima/_lima/colima/ha.stderr.log
 echo "~~~ Verify Docker setup"
 docker version
 docker ps
