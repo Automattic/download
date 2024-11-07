@@ -2,5 +2,5 @@ steps:
   - label: Hello world
     command: echo 'Hellow, world!'
     notify:
-      github_commit_status:
-        context: "Hello, world"
+      - github_commit_status:
+          context: "Hello, world"
