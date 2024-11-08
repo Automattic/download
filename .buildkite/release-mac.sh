@@ -35,7 +35,9 @@ echo "~~~ Start colima"
 #
 # --vz-rosetta is a different attempt to solve the same accelearation problem.
 # In the meantime, I learned the the problem only occurs here in CI because of nested VM.
-/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type qemu --vz-rosetta
+#
+# --vz-rosetta alone did not help, but in reading the YMAL config that `colima start --edit` offerst, maybe one needs to run with --vm-type vz
+/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type vz --vz-rosetta
 echo "~~~ Check colima status"
 /opt/homebrew/opt/colima/bin/colima status
 echo "~~~ Print logs from expected failure"
