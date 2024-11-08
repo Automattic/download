@@ -1,5 +1,5 @@
 steps:
-  - label: Hello world
+  - label: Package for macOS
     command: .buildkite/release-mac.sh
     notify:
       - github_commit_status:
