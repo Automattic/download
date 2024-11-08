@@ -26,8 +26,12 @@ echo "~~~ [Workaround attempt] Delete colima settings"
 # And see https://buildkite.com/automattic/download/builds/18#01930613-abac-4673-bee5-51d94d1c31fd for why we call delete first
 /opt/homebrew/opt/colima/bin/colima delete --force
 echo "~~~ Start colima"
-# --vm-type vz – an experiment taken from https://github.com/abiosoft/colima/issues/746#issuecomment-1692849926
-/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type qemu
+# --vm-type vz – an experiment taken from https://github.com/abiosoft/colima/issues/746#issuecomment-1692849926 – FAILED
+#
+# --arch x86_64 — to work around the hvf acceleration error experienced here
+# https://buildkite.com/automattic/download/builds/30#0193097f-5aaf-402f-bb47-f75246faef06/483-499
+# solution inspired from https://github.com/actions/runner-images/issues/9460
+/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type qemu --arch x86_64
 echo "~~~ Check colima status"
 /opt/homebrew/opt/colima/bin/colima status
 echo "~~~ Print logs from expected failure"
