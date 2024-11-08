@@ -37,7 +37,16 @@ echo "~~~ Start colima"
 # In the meantime, I learned the the problem only occurs here in CI because of nested VM.
 #
 # --vz-rosetta alone did not help, but in reading the YMAL config that `colima start --edit` offerst, maybe one needs to run with --vm-type vz
-/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type vz --vz-rosetta
+#
+# Unfortunately, even the vz + vz-rosetta combo fails:
+# "Virtualization is not available on this hardware"
+# See https://buildkite.com/automattic/download/builds/34#01930a7e-450f-41c6-8c54-7d219b5760de
+#
+# --arch aarch64 is the default value, but setting it here explicitly just for clarity / just in case
+/opt/homebrew/opt/colima/bin/colima start \
+  --runtime docker \
+  --vm-type qemu \
+  --arch aarch64
 echo "~~~ Check colima status"
 /opt/homebrew/opt/colima/bin/colima status
 echo "~~~ Print logs from expected failure"
