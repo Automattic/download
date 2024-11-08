@@ -1,0 +1,12 @@
+steps:
+  - label: Package for macOS
+    command: .buildkite/release-mac.sh
+    notify:
+      - github_commit_status:
+          context: macOS Build
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: xcode-16.1
+    artifact_paths:
+      - fyne-cross/dist/**/*.zip
