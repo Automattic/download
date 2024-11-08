@@ -26,7 +26,8 @@ echo "~~~ [Workaround attempt] Delete colima settings"
 # And see https://buildkite.com/automattic/download/builds/18#01930613-abac-4673-bee5-51d94d1c31fd for why we call delete first
 /opt/homebrew/opt/colima/bin/colima delete --force
 echo "~~~ Start colima"
-/opt/homebrew/opt/colima/bin/colima start --runtime docker
+# --vm-type vz – an experiment taken from https://github.com/abiosoft/colima/issues/746#issuecomment-1692849926
+/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type vz
 echo "~~~ Print logs from expected failure"
 cat /Users/builder/.colima/_lima/colima/ha.stderr.log
 echo "~~~ Verify Docker setup"
