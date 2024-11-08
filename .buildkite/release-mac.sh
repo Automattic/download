@@ -27,7 +27,7 @@ echo "~~~ [Workaround attempt] Delete colima settings"
 /opt/homebrew/opt/colima/bin/colima delete --force
 echo "~~~ Start colima"
 # --vm-type vz – an experiment taken from https://github.com/abiosoft/colima/issues/746#issuecomment-1692849926
-/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type vz
+/opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type qemu
 echo "~~~ Check colima status"
 /opt/homebrew/opt/colima/bin/colima status
 echo "~~~ Print logs from expected failure"
