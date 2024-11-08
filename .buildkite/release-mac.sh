@@ -1,5 +1,8 @@
 #!/bin/bash -u
 
+echo "~~~ Check Homebrew setup"
+brew config
+
 echo "--- :go: Installing Go"
 echo "~~~ Install Go"
 brew install go
