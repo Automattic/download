@@ -16,6 +16,7 @@ release-mac: fyne
 	# fyne-cross fails to create this in CI, maybe creating it beforhead will help?
 	mkdir -p fyne-cross/bin/darwin-amd64
 	mkdir -p fyne-cross/bin/darwin-arm64
+	chmod -R 777 fyne-cross # Temporarily set full permissions for debugging
 	fyne-cross darwin -app-id $(APP_ID) -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull -debug
 	cd fyne-cross/dist/darwin-amd64 && zip -r ../download-mac-amd64.zip download.app
 	cd fyne-cross/dist/darwin-arm64 && zip -r ../download-mac-arm64.zip download.app
