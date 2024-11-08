@@ -3,6 +3,12 @@
 echo "~~~ Check Homebrew setup"
 brew config
 
+echo "--- :mag: Filesystem debug info"
+set -x
+ls -ld /opt/ci/builds/builder/automattic/download
+id -u
+set +x
+
 echo "--- :go: Installing Go"
 echo "~~~ Install Go"
 brew install go
