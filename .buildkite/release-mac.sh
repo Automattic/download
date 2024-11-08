@@ -63,6 +63,9 @@ echo "~~~ Start colima"
 # See https://buildkite.com/automattic/download/builds/34#01930a7e-450f-41c6-8c54-7d219b5760de
 #
 # --arch aarch64 is the default value, but setting it here explicitly just for clarity / just in case
+#
+# The lima workaround above is what solved the root of all the issues documented so far.
+# Unfortunately, it only resulted in a new issue, later in the flow when running Docker.
 /opt/homebrew/opt/colima/bin/colima start \
   --runtime docker \
   --vm-type qemu \
@@ -75,6 +78,14 @@ echo "~~~ Check Docker version"
 docker version
 echo "~~~ List Docker containers"
 docker container list
+
+echo "--- Set up Podman"
+echo "~~~ Install Podman"
+brew install podman
+echo "~~~ Init Podman"
+"$(brew --prefix)/opt/podman/bin/podman" machine init
+echo "~~~ Start Podman"
+"$(brew --prefix)/opt/podman/bin/podman" machine start
 
 echo "--- :package: Packaging for macOS"
 make release-mac
