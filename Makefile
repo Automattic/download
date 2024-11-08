@@ -13,7 +13,7 @@ release: release-mac release-windows
 
 release-mac: fyne
 	@rm -rf fyne-cross
-	fyne-cross darwin -app-id $(APP_ID) -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
+	fyne-cross darwin -app-id $(APP_ID) -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull -debug
 	cd fyne-cross/dist/darwin-amd64 && zip -r ../download-mac-amd64.zip download.app
 	cd fyne-cross/dist/darwin-arm64 && zip -r ../download-mac-arm64.zip download.app
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64
