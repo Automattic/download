@@ -30,9 +30,10 @@ echo "~~~ Start colima"
 /opt/homebrew/opt/colima/bin/colima start --runtime docker --vm-type vz
 echo "~~~ Print logs from expected failure"
 cat /Users/builder/.colima/_lima/colima/ha.stderr.log
-echo "~~~ Verify Docker setup"
+echo "~~~ Check Docker version"
 docker version
-docker ps
+echo "~~~ List Docker containers"
+docker container list
 
 echo "--- :package: Packaging for macOS"
 make release-mac
