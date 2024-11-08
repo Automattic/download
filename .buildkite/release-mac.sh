@@ -17,7 +17,6 @@ echo "~~~ Install Docker"
 brew install docker
 echo "~~~ Install colima"
 brew install colima
-echo "~~~ [Workaround attempt] Delete colima settings"
 # HOMEBREW_PREFIX results unbound in CI
 # https://buildkite.com/automattic/download/builds/17#0193060c-6559-4a6c-a5c0-4074a2ec7686/470-471
 # "$HOMEBREW_PREFIX/opt/colima/bin/colima" start --runtime docker
@@ -27,7 +26,19 @@ echo "~~~ [Workaround attempt] Delete colima settings"
 # https://buildkite.com/automattic/download/builds/18#01930613-abac-4673-bee5-51d94d1c31fd
 #
 # And see https://buildkite.com/automattic/download/builds/18#01930613-abac-4673-bee5-51d94d1c31fd for why we call delete first
-/opt/homebrew/opt/colima/bin/colima delete --force
+
+# Disable the colima delete workaround because it doesn't seem to help at all.
+# And after all, we're on a clean install of colima so what is there to delete?
+# echo "~~~ [Workaround attempt] Delete colima settings"
+# /opt/homebrew/opt/colima/bin/colima delete --force
+
+echo "~~~ Hack lima to not use hardware acceleretation"
+# See https://github.com/abiosoft/colima/issues/970
+# in particular https://github.com/abiosoft/colima/issues/970#issuecomment-2298154164
+LIMACTL_PATH=$(brew --prefix)/bin/limactl
+sudo curl -L -o "$LIMACTL_PATH" https://github.com/mikekazakov/lima-nohvf/raw/master/limactl
+sudo chmod +x "$LIMACTL_PATH"
+
 echo "~~~ Start colima"
 # --vm-type vz – an experiment taken from https://github.com/abiosoft/colima/issues/746#issuecomment-1692849926 – FAILED
 #
