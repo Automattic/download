@@ -82,6 +82,8 @@ echo "~~~ Start colima"
 # docker container list
 
 echo "--- Set up Podman"
+echo "~~~ Install QEmu"
+brew install qemu
 echo "~~~ Install Podman"
 brew install podman
 # Is this even necessary?
