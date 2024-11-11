@@ -95,6 +95,7 @@ brew install podman.rb
 # We also need a compatible earlier version of QEMU
 # See https://github.com/containers/podman/issues/20776#issuecomment-1916617430
 echo "~~~ Install QEMU (8.2.1)"
+brew uninstall --ignore-dependencies qemu
 curl -OSL https://raw.githubusercontent.com/Homebrew/homebrew-core/4c7ffca0dc9ced8cd25d1019c49f22e2cb3c8b24/Formula/q/qemu.rb
 brew install qemu.rb
 echo "~~~ Init Podman"
