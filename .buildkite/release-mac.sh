@@ -84,10 +84,11 @@ echo "~~~ Start colima"
 echo "--- Set up Podman"
 echo "~~~ Install Podman"
 brew install podman
+# Is this even necessary?
 echo "~~~ Init Podman"
 "$(brew --prefix)/opt/podman/bin/podman" machine init
-echo "~~~ Start Podman"
-"$(brew --prefix)/opt/podman/bin/podman" machine start
+echo "~~~ Podman Info"
+"$(brew --prefix)/opt/podman/bin/podman" info
 
 echo "--- :package: Packaging for macOS"
 make release-mac
