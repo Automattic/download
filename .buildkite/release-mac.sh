@@ -18,11 +18,11 @@ PATH=$PATH:$(go env GOPATH)/bin
 export PATH
 echo "PATH after: $PATH"
 
-echo "--- :docker: Installing Docker"
-echo "~~~ Install Docker"
-brew install docker
-echo "~~~ Install colima"
-brew install colima
+# echo "--- :docker: Installing Docker"
+# echo "~~~ Install Docker"
+# brew install docker
+# echo "~~~ Install colima"
+# brew install colima
 # HOMEBREW_PREFIX results unbound in CI
 # https://buildkite.com/automattic/download/builds/17#0193060c-6559-4a6c-a5c0-4074a2ec7686/470-471
 # "$HOMEBREW_PREFIX/opt/colima/bin/colima" start --runtime docker
@@ -66,18 +66,20 @@ echo "~~~ Start colima"
 #
 # The lima workaround above is what solved the root of all the issues documented so far.
 # Unfortunately, it only resulted in a new issue, later in the flow when running Docker.
-/opt/homebrew/opt/colima/bin/colima start \
-  --runtime docker \
-  --vm-type qemu \
-  --arch aarch64
-echo "~~~ Check colima status"
-/opt/homebrew/opt/colima/bin/colima status
-echo "~~~ Print logs from expected failure"
-cat /Users/builder/.colima/_lima/colima/ha.stderr.log
-echo "~~~ Check Docker version"
-docker version
-echo "~~~ List Docker containers"
-docker container list
+#
+# Update: Bypassing Colima because it seems unnecessary when using Podman as the engine (see how Makefile calls fyne-cross)
+# /opt/homebrew/opt/colima/bin/colima start \
+#   --runtime docker \
+#   --vm-type qemu \
+#   --arch aarch64
+# echo "~~~ Check colima status"
+# /opt/homebrew/opt/colima/bin/colima status
+# echo "~~~ Print logs from expected failure"
+# cat /Users/builder/.colima/_lima/colima/ha.stderr.log
+# echo "~~~ Check Docker version"
+# docker version
+# echo "~~~ List Docker containers"
+# docker container list
 
 echo "--- Set up Podman"
 echo "~~~ Install Podman"
