@@ -1,5 +1,5 @@
 #!/bin/bash -e
 
-yum install go
+sudo yum install go
 
 make release-mac
