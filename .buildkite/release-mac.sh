@@ -81,17 +81,23 @@ echo "~~~ Start colima"
 # echo "~~~ List Docker containers"
 # docker container list
 
-echo "--- Set up Podman"
-echo "~~~ Install QEmu"
-brew install qemu
+echo "--- :computer: Set up Podman"
 echo "~~~ Install Podman (4.9.3)"
 # Podman 5 no longer supports QEmu
 # https://github.com/containers/podman/releases/tag/v5.0.0
 # But we want to use QEmu because of nested VM limitation with Apple Virtualization.
 #
 # brew install podman
-curl -OSL https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman-on-macos#on-apple-silicon-the-podman-machine-does-not-start
+#
+# See https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman-on-macos#on-apple-silicon-the-podman-machine-does-not-start
+curl -OSL https://raw.githubusercontent.com/Homebrew/homebrew-core/2ecc4751e61c80268d851f3ef07c39fc0f93e226/Formula/p/podman.rb
 brew install podman.rb
+echo "~~~ Install QEmu"
+brew install bunzip
+mkdir -p /opt/homebrew/Cellar/qemu/8.2.0/share/qemu
+curl -sL https://github.com/AkihiroSuda/qemu/raw/704f7cad5105246822686f65765ab92045f71a3b/pc-bios/edk2-aarch64-code.fd.bz2 | bunzip2 > /opt/homebrew/Cellar/qemu/8.2.0/share/qemu/edk2-aarch64-code.fd
+which qemu
+# We also need a compatible earlier version of QEMU
 echo "~~~ Init Podman"
 podman --log-level debug machine init
 echo "~~~ Start Podman machine"
