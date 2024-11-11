@@ -86,7 +86,8 @@ echo "~~~ Install QEmu"
 brew install qemu
 echo "~~~ Install Podman"
 brew install podman
-# Is this even necessary?
+echo "~~~ Configure Podman to use QEmu"
+export CONTAINERS_MACHINE_PROVIDER="qemu"
 echo "~~~ Init Podman"
 "$(brew --prefix)/opt/podman/bin/podman" --log-level debug machine init
 echo "~~~ Start Podman machine"
