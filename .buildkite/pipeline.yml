@@ -17,6 +17,6 @@ steps:
       - github_commit_status:
           context: macOS Build on Tumblr Metal
     agents:
-      queue: tumblr-metal
+      queue: default
     artifact_paths:
       - fyne-cross/dist/**/*.zip
