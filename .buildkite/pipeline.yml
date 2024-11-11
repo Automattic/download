@@ -11,12 +11,22 @@ steps:
     artifact_paths:
       - fyne-cross/dist/**/*.zip
 
-  - label: Package for macOS on Tumblr Metal
-    command: .buildkite/release-mac-from-tumblr.sh
+  - label: Package for macOS on default
+    command: .buildkite/release-mac-from-default.sh
     notify:
       - github_commit_status:
-          context: macOS Build on Tumblr Metal
+          context: macOS Build on default
     agents:
       queue: default
     artifact_paths:
       - fyne-cross/dist/**/*.zip
+
+  - label: Package for macOS on windows
+    command: .buildkite/release-mac-from-windows.sh
+    notify:
+      - github_commit_status:
+          context: macOS Build on Windows
+    agents:
+      queue: default
+    artifact_paths:
+      - fyne-cross\dist\**\*.zip
