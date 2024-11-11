@@ -84,19 +84,14 @@ echo "~~~ Start colima"
 echo "--- Set up Podman"
 echo "~~~ Install QEmu"
 brew install qemu
-echo "~~~ Install Podman"
+echo "~~~ Install Podman (4.9.3)"
 # Podman 5 no longer supports QEmu
 # https://github.com/containers/podman/releases/tag/v5.0.0
 # But we want to use QEmu because of nested VM limitation with Apple Virtualization.
 #
 # brew install podman
-curl -L -o podman.pkg https://github.com/containers/podman/releases/download/v4.9.4/podman-installer-macos-arm64.pkg
-sudo installer -pkg podman.pkg -target /
-echo "~~~ Add Podman to PATH"
-echo "PATH before: $PATH"
-PATH=$PATH:/opt/podman/bin
-export PATH
-echo "PATH after: $PATH"
+curl -OSL https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman-on-macos#on-apple-silicon-the-podman-machine-does-not-start
+brew install podman.rb
 echo "~~~ Init Podman"
 podman --log-level debug machine init
 echo "~~~ Start Podman machine"
