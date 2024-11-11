@@ -1,3 +1,3 @@
 #!/bin/bash -e
 
-apt-get go
+yum install go
