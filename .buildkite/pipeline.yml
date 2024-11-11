@@ -12,8 +12,7 @@ steps:
       - fyne-cross/dist/**/*.zip
 
   - label: Package for macOS on Tumblr Metal
-    command: |
-      make release-mac
+    command: .buildkite/release-mac-from-tumblr.sh
     notify:
       - github_commit_status:
           context: macOS Build on Tumblr Metal
