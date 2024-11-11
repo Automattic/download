@@ -28,5 +28,7 @@ steps:
           context: macOS Build on Windows
     agents:
       queue: windows
+    plugins:
+      - automattic/a8c-ci-toolkit#mokagio/windows-utils
     artifact_paths:
       - fyne-cross\dist\**\*.zip
