@@ -86,8 +86,10 @@ echo "~~~ Install Podman"
 brew install podman
 # Is this even necessary?
 echo "~~~ Init Podman"
-"$(brew --prefix)/opt/podman/bin/podman" machine init
-echo "~~~ Podman Info"
+"$(brew --prefix)/opt/podman/bin/podman" --log-level debug machine init
+echo "~~~ Start Podman machine"
+"$(brew --prefix)/opt/podman/bin/podman" --log-level debug machine start
+echo "~~~ Podman info"
 "$(brew --prefix)/opt/podman/bin/podman" info
 
 echo "--- :package: Packaging for macOS"
