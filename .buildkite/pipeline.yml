@@ -27,6 +27,6 @@ steps:
       - github_commit_status:
           context: macOS Build on Windows
     agents:
-      queue: default
+      queue: windows
     artifact_paths:
       - fyne-cross\dist\**\*.zip
