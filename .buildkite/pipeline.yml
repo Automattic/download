@@ -1,12 +1,23 @@
 steps:
-  - label: Package for macOS
+  - label: Package for macOS on macOS
     command: .buildkite/release-mac.sh
     notify:
       - github_commit_status:
-          context: macOS Build
+          context: macOS Build on macOS
     agents:
       queue: mac
     env:
       IMAGE_ID: xcode-16.1
+    artifact_paths:
+      - fyne-cross/dist/**/*.zip
+
+  - label: Package for macOS on Tumblr Metal
+    command: |
+      make release-mac
+    notify:
+      - github_commit_status:
+          context: macOS Build on Tumblr Metal
+    agents:
+      queue: tumblr-metal
     artifact_paths:
       - fyne-cross/dist/**/*.zip
