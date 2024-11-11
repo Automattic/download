@@ -92,12 +92,11 @@ echo "~~~ Install Podman (4.9.3)"
 # See https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman-on-macos#on-apple-silicon-the-podman-machine-does-not-start
 curl -OSL https://raw.githubusercontent.com/Homebrew/homebrew-core/2ecc4751e61c80268d851f3ef07c39fc0f93e226/Formula/p/podman.rb
 brew install podman.rb
-echo "~~~ Install QEmu"
-brew install bunzip
-mkdir -p /opt/homebrew/Cellar/qemu/8.2.0/share/qemu
-curl -sL https://github.com/AkihiroSuda/qemu/raw/704f7cad5105246822686f65765ab92045f71a3b/pc-bios/edk2-aarch64-code.fd.bz2 | bunzip2 > /opt/homebrew/Cellar/qemu/8.2.0/share/qemu/edk2-aarch64-code.fd
-which qemu
 # We also need a compatible earlier version of QEMU
+# See https://github.com/containers/podman/issues/20776#issuecomment-1916617430
+echo "~~~ Install QEMU (8.2.1)"
+curl -OSL https://raw.githubusercontent.com/Homebrew/homebrew-core/4c7ffca0dc9ced8cd25d1019c49f22e2cb3c8b24/Formula/q/qemu.rb
+brew install qemu.rb
 echo "~~~ Init Podman"
 podman --log-level debug machine init
 echo "~~~ Start Podman machine"
