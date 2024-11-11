@@ -85,15 +85,24 @@ echo "--- Set up Podman"
 echo "~~~ Install QEmu"
 brew install qemu
 echo "~~~ Install Podman"
-brew install podman
-echo "~~~ Configure Podman to use QEmu"
-export CONTAINERS_MACHINE_PROVIDER="qemu"
+# Podman 5 no longer supports QEmu
+# https://github.com/containers/podman/releases/tag/v5.0.0
+# But we want to use QEmu because of nested VM limitation with Apple Virtualization.
+#
+# brew install podman
+curl -L -o podman.pkg https://github.com/containers/podman/releases/download/v4.9.4/podman-installer-macos-arm64.pkg
+sudo installer -pkg podman.pkg -target /
+echo "~~~ Add Podman to PATH"
+echo "PATH before: $PATH"
+PATH=$PATH:/opt/podman/bin
+export PATH
+echo "PATH after: $PATH"
 echo "~~~ Init Podman"
-"$(brew --prefix)/opt/podman/bin/podman" --log-level debug machine init
+podman --log-level debug machine init
 echo "~~~ Start Podman machine"
-"$(brew --prefix)/opt/podman/bin/podman" --log-level debug machine start
+podman --log-level debug machine start
 echo "~~~ Podman info"
-"$(brew --prefix)/opt/podman/bin/podman" info
+podman info
 
 echo "--- :package: Packaging for macOS"
 make release-mac
