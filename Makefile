@@ -38,9 +38,9 @@ release-windows: fyne
 	fyne-cross windows \
 		-app-id $(APP_ID) \
 		-app-version $(BUILD_VERSION).$(BUILD_TIME) \
-		-arch=* -pull \
-		-debug \
-		-engine podman
+		-arch=* \
+		-pull \
+		-debug
 	mv fyne-cross/dist/windows-arm64/download.exe.zip fyne-cross/dist/download-windows-arm64.zip
 	mv fyne-cross/dist/windows-amd64/download.exe.zip fyne-cross/dist/download-windows-amd64.zip
 	mv fyne-cross/dist/windows-386/download.exe.zip fyne-cross/dist/download-windows-i386.zip
