@@ -129,3 +129,5 @@ echo "--- :package: Packaging for macOS"
 # make release-mac
 make fyne
 fyne package
+echo "--- :package: Zip app as artifact"
+zip -r download.zip download.app

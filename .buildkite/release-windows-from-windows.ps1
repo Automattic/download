@@ -48,4 +48,5 @@ Write-Host "--- :gear: Running packaging script"
 # make release-windows
 make fyne
 fyne package
+ls
 if ($LastExitCode -ne 0) { Exit $LastExitCode }
