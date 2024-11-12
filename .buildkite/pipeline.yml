@@ -1,5 +1,5 @@
 steps:
-  - label: Package for macOS on macOS
+  - label: (fyne) Package for macOS on macOS
     command: .buildkite/release-mac.sh
     notify:
       - github_commit_status:
@@ -37,7 +37,7 @@ steps:
     artifact_paths:
       - fyne-cross/dist/**/*.zip
 
-  - label: Package for macOS on windows
+  - label: (fyne) Package for macOS on windows
     command: .buildkite/release-windows-from-windows.ps1
     notify:
       - github_commit_status:

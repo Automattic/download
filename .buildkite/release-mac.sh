@@ -120,10 +120,12 @@ sed -i '' \
   -e '/host/d' \
   "$CONFIG_PATH"
 cat "$CONFIG_PATH"
-echo "~~~ Start Podman machine"
-podman --log-level debug machine start
+# echo "~~~ Start Podman machine"
+# podman --log-level debug machine start
 echo "~~~ Podman info"
 podman info
 
 echo "--- :package: Packaging for macOS"
-make release-mac
+# make release-mac
+make fyne
+fyne package
