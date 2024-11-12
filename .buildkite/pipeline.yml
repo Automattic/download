@@ -25,7 +25,7 @@ steps:
   #     - fyne-cross/dist/**/*.zip
 
   - label: Package for macOS on Dockerized build
-    command: .buildkite/release-mac-from-default.sh
+    command: .buildkite/release-mac-from-docker.sh
     notify:
       - github_commit_status:
           context: macOS Build on Docker
