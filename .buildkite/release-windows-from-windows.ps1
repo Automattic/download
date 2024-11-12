@@ -14,5 +14,5 @@ choco install go -y
 refreshenv
 
 Write-Host "--- :gear: Running packaging script"
-bash ".\.buildkite\release-mac-from-windows.sh"
+make release-windows
 if ($LastExitCode -ne 0) { Exit $LastExitCode }
