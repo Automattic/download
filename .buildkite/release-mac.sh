@@ -106,7 +106,11 @@ CONFIG_PATH="$HOME/.config/containers/podman/machine/qemu/podman-machine-default
 cat "$CONFIG_PATH"
 echo "~~~ Replace hvf with tgc in config"
 # A bit risky as a substitution, but the stock config only has one hvf occurrence, so we should be fine
-sed -i '' 's/"hvf"/"tcg"/g' "$CONFIG_PATH"
+sed -i '' \
+  -e 's/"hvf"/"tcg"/g' \
+  -e '/-cpu/d' \
+  -e '/host/d' \
+  "$CONFIG_PATH"
 cat "$CONFIG_PATH"
 echo "~~~ Start Podman machine"
 podman --log-level debug machine start
