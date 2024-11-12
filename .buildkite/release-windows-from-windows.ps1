@@ -28,11 +28,12 @@ refreshenv
 
 Write-Host "--- :windows: Installing Docker"
 choco install docker-cli -y
+choco install docker-desktop -y
 
 refreshenv
 
 Write-Host "--- :bug: Print help"
-C:\ProgramData\chocolatey\lib\docker-cli --help
+# C:\ProgramData\chocolatey\lib\docker-cli --help
 
 # This should avoid failures like
 # > no matching manifest for windows/amd64 10.0.17763 in the manifest list entries
