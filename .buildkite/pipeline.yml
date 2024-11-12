@@ -33,5 +33,7 @@ steps:
       queue: windows
     plugins:
       - automattic/a8c-ci-toolkit#mokagio/windows-utils
+    env:
+      BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
     artifact_paths:
       - fyne-cross\dist\**\*.zip
