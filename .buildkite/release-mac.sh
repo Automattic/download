@@ -101,6 +101,13 @@ curl -OSL https://raw.githubusercontent.com/Homebrew/homebrew-core/4c7ffca0dc9ce
 HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1 brew install qemu.rb
 echo "~~~ Init Podman"
 podman --log-level debug machine init
+echo "~~~ Check Podman machine config"
+CONFIG_PATH="$HOME/.config/containers/podman/machine/qemu/podman-machine-default.json"
+cat "$CONFIG_PATH"
+echo "~~~ Replace hvf with tgc in config"
+# A bit risky as a substitution, but the stock config only has one hvf occurrence, so we should be fine
+sed -i '' 's/"hvf"/"tcg"/g' "$CONFIG_PATH"
+cat "$CONFIG_PATH"
 echo "~~~ Start Podman machine"
 podman --log-level debug machine start
 echo "~~~ Podman info"
