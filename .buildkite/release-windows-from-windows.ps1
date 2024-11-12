@@ -30,6 +30,9 @@ Write-Host "--- :windows: Installing Docker"
 choco install docker-cli -y
 choco install docker-desktop -y
 
+Write-Host "--- :chocolate: Print logs"
+cat C:\ProgramData\chocolatey\logs\chocolatey.log
+
 refreshenv
 
 Write-Host "--- :bug: Print help"
