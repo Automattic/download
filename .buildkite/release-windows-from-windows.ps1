@@ -27,18 +27,18 @@ refreshenv
 # podman machine start
 
 Write-Host "--- :windows: Installing Docker"
-choco install docker -y
+choco install docker-cli -y
 
 refreshenv
+
+Write-Host "--- :bug: Print help"
+C:\ProgramData\chocolatey\lib\docker-cli --help
 
 # This should avoid failures like
 # > no matching manifest for windows/amd64 10.0.17763 in the manifest list entries
 # See https://buildkite.com/automattic/download/builds/75#01931e2b-2bdf-40b3-8c4f-d8f2f7c6bd15/317-357
 Write-Host "--- :docker: Switch to Linux containers"
-ls $Env:ProgramFiles\
-ls $Env:ProgramFiles\Docker
-ls $Env:ProgramFiles\Docker\Docker
-& $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon .
+Write-Host "+++ TODO"
 
 Write-Host "--- :gear: Running packaging script"
 make release-windows
