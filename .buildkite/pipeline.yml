@@ -24,6 +24,19 @@ steps:
   #   artifact_paths:
   #     - fyne-cross/dist/**/*.zip
 
+  - label: Package for macOS on Dockerized build
+    command: .buildkite/release-mac-from-default.sh
+    notify:
+      - github_commit_status:
+          context: macOS Build on Docker
+    agents:
+      queue: default
+    plugins:
+      - docker#v5.12.0:
+          image: golang:1.11
+    artifact_paths:
+      - fyne-cross/dist/**/*.zip
+
   - label: Package for macOS on windows
     command: .buildkite/release-mac-from-windows.ps1
     notify:
