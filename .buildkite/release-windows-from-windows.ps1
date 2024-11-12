@@ -19,7 +19,7 @@ refreshenv
 Write-Host "--- :windows: Installing Podman"
 # The install process requires user confirmation, hence the -y option
 # See https://buildkite.com/automattic/download/builds/64#01931dc8-2a8f-4d2b-8382-8b69964896c5/240-261
-choco install podman-cli
+choco install podman-cli -y
 
 refreshenv
 
