@@ -9,6 +9,7 @@ steps:
     env:
       IMAGE_ID: xcode-16.1
     artifact_paths:
+      - download.zip
       - fyne-cross/dist/**/*.zip
 
   # Does not work because there is no sudo access
