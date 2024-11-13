@@ -1,5 +1,8 @@
 #!/bin/bash -u
 
+echo "~~~ :ruby: Install Ruby tools"
+install_gems
+
 echo "~~~ Check Homebrew setup"
 brew config
 

@@ -1,6 +1,8 @@
 steps:
   - label: (fyne) Package for macOS on macOS
     command: .buildkite/release-mac.sh
+    plugins:
+      - automattic/a8c-ci-toolkit#mokagio/windows-utils
     notify:
       - github_commit_status:
           context: macOS Build on macOS
