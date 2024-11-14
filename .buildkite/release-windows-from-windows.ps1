@@ -51,9 +51,13 @@ Write-Host "--- :bug: Print help"
 Write-Host "--- :docker: Switch to Linux containers"
 Write-Host "+++ TODO"
 
-Write-Host "--- :gear: Running packaging script"
-# make release-windows
+Write-Host "--- :go: Installing Go tools"
 make fyne
+
+Write-Host "--- :package: Packaging"
 fyne package
-ls
+
+Write-Host "--- :rocket: Preparing package for release"
+make release-windows
+
 if ($LastExitCode -ne 0) { Exit $LastExitCode }

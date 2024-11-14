@@ -34,14 +34,8 @@ release-mac: fyne
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64
 
 release-windows: fyne
-	@rm -rf fyne-cross
-	fyne-cross windows \
-		-app-id $(APP_ID) \
-		-app-version $(BUILD_VERSION).$(BUILD_TIME) \
-		-arch=arm64 \
-		-pull \
-		-debug
-	mv fyne-cross/dist/windows-arm64/download.exe.zip fyne-cross/dist/download-windows-arm64.zip
-	mv fyne-cross/dist/windows-amd64/download.exe.zip fyne-cross/dist/download-windows-amd64.zip
-	mv fyne-cross/dist/windows-386/download.exe.zip fyne-cross/dist/download-windows-i386.zip
-	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/windows-arm64 fyne-cross/dist/windows-amd64 fyne-cross/dist/windows-386
+	echo "Expecting this to fail, but it's faster to run in CI than on my VM..."
+	fyne release \
+		-appID $(APP_ID) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild $(BUILD_TIME) \
