@@ -40,3 +40,5 @@ steps:
       BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
     artifact_paths:
       - fyne-cross\dist\**\*.zip
+      - download.exe
+      - download.appx
