@@ -48,8 +48,8 @@ Write-Host "--- :bug: Print help"
 # This should avoid failures like
 # > no matching manifest for windows/amd64 10.0.17763 in the manifest list entries
 # See https://buildkite.com/automattic/download/builds/75#01931e2b-2bdf-40b3-8c4f-d8f2f7c6bd15/317-357
-Write-Host "--- :docker: Switch to Linux containers"
-Write-Host "+++ TODO"
+# Write-Host "--- :docker: Switch to Linux containers"
+# Write-Host "+++ TODO"
 
 Write-Host "--- :go: Installing Go tools"
 make fyne
