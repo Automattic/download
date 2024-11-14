@@ -37,7 +37,7 @@ release-windows: fyne
 	echo "Expecting this to fail, but it's faster to run in CI than on my VM..."
 	fyne release \
 		-appID $(APP_ID) \
-		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appVersion $(BUILD_VERSION) \
 		-appBuild $(BUILD_TIME) \
 		-developer "CN='Automattic, Inc.', O='Automattic, Inc.', S=California, C=US" \
 		-certificate certificat.pfx \
