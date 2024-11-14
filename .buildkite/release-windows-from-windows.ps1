@@ -42,7 +42,7 @@ refreshenv
 
 # refreshenv
 
-Write-Host "--- :bug: Print help"
+# Write-Host "--- :bug: Print help"
 # C:\ProgramData\chocolatey\lib\docker-cli --help
 
 # This should avoid failures like
@@ -50,6 +50,9 @@ Write-Host "--- :bug: Print help"
 # See https://buildkite.com/automattic/download/builds/75#01931e2b-2bdf-40b3-8c4f-d8f2f7c6bd15/317-357
 # Write-Host "--- :docker: Switch to Linux containers"
 # Write-Host "+++ TODO"
+
+& "$PSScriptRoot\install-windows-10-sdk.ps1"
+If ($LastExitCode -ne 0) { Exit $LastExitCode }
 
 Write-Host "--- :go: Installing Go tools"
 make fyne
