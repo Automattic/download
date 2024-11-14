@@ -1,5 +1,14 @@
-BUILD_VERSION=1
-BUILD_TIME=$(shell date +%s)
+# Windows apps have upper bounds on the version components:
+#
+# For Windows 10 or Windows 11 (UWP) packages, the last (fourth) section of the
+# version number is reserved for Store use and must be left as 0 when you build
+# your package (although the Store may change the value in this section). The
+# other sections must be set to an integer between 0 and 65535 (except for the
+# first section, which cannot be 0).
+#
+# https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements#package-version-numbering
+BUILD_VERSION=1.$(shell date +%Y%m%d)
+BUILD_TIME=$(shell date +%H%M%S)
 APP_ID=com.automattic.download
 
 all: release
@@ -37,8 +46,8 @@ release-windows: fyne
 	echo "Expecting this to fail, but it's faster to run in CI than on my VM..."
 	fyne release \
 		-appID $(APP_ID) \
-		-appVersion $(BUILD_VERSION) \
-		-appBuild $(BUILD_TIME) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild 0 \
 		-developer "CN='Automattic, Inc.', O='Automattic, Inc.', S=California, C=US" \
 		-certificate certificat.pfx \
 		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
