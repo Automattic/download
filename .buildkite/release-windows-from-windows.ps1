@@ -54,13 +54,5 @@ refreshenv
 & "$PSScriptRoot\install-windows-10-sdk.ps1"
 If ($LastExitCode -ne 0) { Exit $LastExitCode }
 
-Write-Host "--- :go: Installing Go tools"
-make fyne
-
-Write-Host "--- :package: Packaging"
-fyne package
-
-Write-Host "--- :rocket: Preparing package for release"
 make release-windows
-
 if ($LastExitCode -ne 0) { Exit $LastExitCode }

@@ -14,6 +14,7 @@ APP_ID=com.automattic.download
 all: release
 
 fyne:
+	@echo "--- :go: Installing Go tools"
 	go install github.com/fyne-io/fyne-cross@latest
 	go install fyne.io/fyne/v2/cmd/fyne@v2.5
 
@@ -42,12 +43,21 @@ release-mac: fyne
 	cd fyne-cross/dist/darwin-arm64 && zip -r ../download-mac-arm64.zip download.app
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64
 
+# TODO: Find a way to DRY the -app* flags?
+#
+# Notice -appBuild 1: Windows docs says this should be 0 for store use but fyne requires it to be > 0
 release-windows: fyne
-	echo "Expecting this to fail, but it's faster to run in CI than on my VM..."
+	@echo "~~~ Expecting these to fail, but it's faster to run in CI than on my VM..."
+	@echo "--- :package: Packaging"
+	fyne package \
+		-appID $(APP_ID) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild 1
+	@echo "--- :rocket: Preparing package for release"
 	fyne release \
 		-appID $(APP_ID) \
 		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
-		-appBuild 0 \
+		-appBuild 1 \
 		-developer "CN='Automattic, Inc.', O='Automattic, Inc.', S=California, C=US" \
 		-certificate certificat.pfx \
 		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
