@@ -7,8 +7,8 @@
 # first section, which cannot be 0).
 #
 # https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements#package-version-numbering
-BUILD_VERSION=1.$(shell date +%Y%m%d)
-BUILD_TIME=$(shell date +%H%M%S)
+BUILD_VERSION=1.$(shell date +%y%m)
+BUILD_TIME=$(shell date +%d%H)
 APP_ID=com.automattic.download
 
 all: release
