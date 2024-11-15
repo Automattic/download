@@ -1,4 +1,5 @@
 fyne-cross/**
 **/.DS_Store
 vendor/bundle/**
-download.app
+*.app
+*.app.zip
