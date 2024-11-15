@@ -47,14 +47,27 @@ release-mac: fyne
 #
 # Notice -appBuild 1: Windows docs says this should be 0 for store use but fyne requires it to be > 0
 release-windows: fyne
+	# The release command works, but:
+	#
+	# - The exe is not signed
+	# - The appx is installed but does not go anywhere
 	@echo "~~~ Expecting these to fail, but it's faster to run in CI than on my VM..."
-	@echo "--- :rocket: Preparing package for release"
-	fyne release \
+	# @echo "--- :rocket: Preparing package for release"
+	# fyne release \
+	# 	-appID $(APP_ID) \
+	# 	-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+	# 	-appBuild 1 \
+	# 	-name Download \
+	# 	-os windows \
+	# 	-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
+	# 	-certificate certificate.pfx \
+	# 	-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
+	@echo "--- :rocket: Packaging for distribution"
+	fyne package \
+		-release \
 		-appID $(APP_ID) \
 		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
 		-appBuild 1 \
 		-name Download \
 		-os windows \
-		-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
 		-certificate certificate.pfx \
-		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
