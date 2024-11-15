@@ -1,6 +1,6 @@
 steps:
   - label: '"Package" for macOS'
-    command:
+    command: |
       install_gems
       make package-mac
     plugins:
@@ -16,7 +16,7 @@ steps:
       - download.app.zip
 
   - label: '"Release" for macOS'
-    command:
+    command: |
       install_gems
       make release-mac
     plugins:
