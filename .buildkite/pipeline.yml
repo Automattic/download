@@ -1,0 +1,13 @@
+steps:
+  - label: Windows build
+    agents:
+      queue: windows
+    plugins:
+      - automattic/a8c-ci-toolkit#mokagio/windows-utils
+    command: .buildkite/release-windows.ps1
+    artifact_paths:
+      - download.exe
+      - download.appx
+    notify:
+      - github_commit_status:
+          context: Windows build
