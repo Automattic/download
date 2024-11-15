@@ -9,8 +9,8 @@ $ErrorActionPreference = "Stop"
 # Will this help?
 Write-Host "--- :windows: Import code signing certificate"
 $certPath = (Convert-Path .\certificate.pfx)
-If (-not (Test-Path $certPath)) {
-    Write-Host "PFX certificate wound at expected path $certPath. Adding it to the cert store..."
+If (Test-Path $certPath) {
+    Write-Host "PFX certificate found at expected path $certPath. Adding it to the cert store..."
 } else {
     Write-Host "[!] Certificate file does not exist at given path $certPath."
     Exit 1
