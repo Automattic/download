@@ -8,8 +8,15 @@ $ErrorActionPreference = "Stop"
 #
 # Will this help?
 Write-Host "--- :windows: Import code signing certificate"
+$certPath = (Convert-Path .\certificate.pfx)
+If (Test-Path $certPath) {
+    Write-Host "Environment variable CSC_LINK set to $certPath"
+} else {
+    Write-Host "[!] Certificate file does not exist at given path $certPath."
+    Exit 1
+}
 Import-PfxCertificate \
-  -FilePath (Convert-Path .\certificate.pfx) \
+  -FilePath $certPath \
   -CertStoreLocation Cert:\LocalMachine\Root \
   -Password (ConvertTo-SecureString -String $env:WINDOWS_CODE_SIGNING_CERT_PASSWORD -AsPlainText -Force)
 
