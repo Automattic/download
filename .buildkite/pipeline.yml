@@ -1,7 +1,7 @@
 steps:
   - label: '"Package" for macOS'
     command: |
-      install_gems
+      .buildkite/prepare-macos.sh
       make package-mac
     plugins:
       - automattic/a8c-ci-toolkit#3.7.1
@@ -17,7 +17,7 @@ steps:
 
   - label: '"Release" for macOS'
     command: |
-      install_gems
+      .buildkite/prepare-macos.sh
       make release-mac
     plugins:
       - automattic/a8c-ci-toolkit#3.7.1
