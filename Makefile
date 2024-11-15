@@ -48,11 +48,6 @@ release-mac: fyne
 # Notice -appBuild 1: Windows docs says this should be 0 for store use but fyne requires it to be > 0
 release-windows: fyne
 	@echo "~~~ Expecting these to fail, but it's faster to run in CI than on my VM..."
-	@echo "--- :package: Packaging"
-	fyne package \
-		-appID $(APP_ID) \
-		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
-		-appBuild 1
 	@echo "--- :rocket: Preparing package for release"
 	fyne release \
 		-appID $(APP_ID) \
