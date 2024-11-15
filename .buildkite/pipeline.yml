@@ -1,32 +1,4 @@
 steps:
-  - label: (fyne) Package for macOS on macOS
-    command: .buildkite/release-mac.sh
-    plugins:
-      - automattic/a8c-ci-toolkit#mokagio/windows-utils
-    notify:
-      - github_commit_status:
-          context: macOS Build on macOS
-    agents:
-      queue: mac
-    env:
-      IMAGE_ID: xcode-16.1
-    artifact_paths:
-      - download.zip
-      - fyne-cross/dist/**/*.zip
-
-  # Does not work because there is no sudo access
-  # See https://buildkite.com/automattic/download/builds/63#01931ade-eb7f-4b62-88ec-f0eb6812d320
-  #
-  # - label: Package for macOS on default
-  #   command: .buildkite/release-mac-from-default.sh
-  #   notify:
-  #     - github_commit_status:
-  #         context: macOS Build on default
-  #   agents:
-  #     queue: default
-  #   artifact_paths:
-  #     - fyne-cross/dist/**/*.zip
-
   - label: Build on Windows with `package`
     command: |
       .buildkite/prepare-windows.ps1
