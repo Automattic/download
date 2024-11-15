@@ -3,25 +3,19 @@ $ErrorActionPreference = "Stop"
 
 & "prepare_windows_host_for_node.ps1"
 
-Write-Host "--- :bug: ls"
-ls
-
 # The exe is generated successfully, but even if we pass the certificate to `fyne package -release`
 # Windows Defender still picks it up as a virus.
 #
 # Will this help?
 Write-Host "--- :windows: Import code signing certificate"
 $certPath = (Convert-Path .\certificate.pfx)
-If (Test-Path $certPath) {
-    Write-Host "Environment variable CSC_LINK set to $certPath"
+If (-not (Test-Path $certPath)) {
+    Write-Host "PFX certificate wound at expected path $certPath. Adding it to the cert store..."
 } else {
     Write-Host "[!] Certificate file does not exist at given path $certPath."
     Exit 1
 }
-Import-PfxCertificate \
-  -FilePath $certPath \
-  -CertStoreLocation Cert:\LocalMachine\Root \
-  -Password (ConvertTo-SecureString -String $env:WINDOWS_CODE_SIGNING_CERT_PASSWORD -AsPlainText -Force)
+Import-PfxCertificate -FilePath $certPath -CertStoreLocation Cert:\LocalMachine\Root -Password (ConvertTo-SecureString -String $env:WINDOWS_CODE_SIGNING_CERT_PASSWORD -AsPlainText -Force)
 
 Write-Host "--- :windows: Installing make"
 choco install make

@@ -51,17 +51,19 @@ release-windows: fyne
 	#
 	# - The exe is not signed
 	# - The appx is installed but does not go anywhere
-	@echo "~~~ Expecting these to fail, but it's faster to run in CI than on my VM..."
-	# @echo "--- :rocket: Preparing package for release"
-	# fyne release \
-	# 	-appID $(APP_ID) \
-	# 	-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
-	# 	-appBuild 1 \
-	# 	-name Download \
-	# 	-os windows \
-	# 	-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
-	# 	-certificate certificate.pfx \
-	# 	-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
+	@echo "--- :rocket: Preparing package for release"
+	fyne release \
+		-appID $(APP_ID) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild 1 \
+		-name Download \
+		-os windows \
+		-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
+		-certificate certificate.pfx \
+		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
+
+package-windows: fyne
+	# Despite passing the certificate, the exe remains unsigned
 	@echo "--- :rocket: Packaging for distribution"
 	fyne package \
 		-release \

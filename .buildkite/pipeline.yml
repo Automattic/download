@@ -27,11 +27,13 @@ steps:
   #   artifact_paths:
   #     - fyne-cross/dist/**/*.zip
 
-  - label: (fyne) Package for macOS on windows
-    command: .buildkite/release-windows-from-windows.ps1
+  - label: Build on Windows with `package`
+    command: |
+      .buildkite/prepare-windows.ps1
+      make package-windows
     notify:
       - github_commit_status:
-          context: macOS Build on Windows
+          context: Package on Windows
     agents:
       queue: windows
     plugins:
@@ -39,6 +41,21 @@ steps:
     env:
       BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
     artifact_paths:
-      - fyne-cross\dist\**\*.zip
+      - download.exe
+
+  - label: Build on Windows with `release`
+    command: |
+      .buildkite/prepare-windows.ps1
+      make release-windows
+    notify:
+      - github_commit_status:
+          context: Release on Windows
+    agents:
+      queue: windows
+    plugins:
+      - automattic/a8c-ci-toolkit#mokagio/windows-utils
+    env:
+      BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
+    artifact_paths:
       - download.exe
       - download.appx
