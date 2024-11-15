@@ -54,6 +54,7 @@ release-windows: fyne
 		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
 		-appBuild 1 \
 		-name Download \
+		-os windows \
 		-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
 		-certificate certificate.pfx \
 		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
