@@ -3,6 +3,9 @@ $ErrorActionPreference = "Stop"
 
 & "prepare_windows_host_for_node.ps1"
 
+Write-Host "--- :bug: ls"
+ls
+
 # The exe is generated successfully, but even if we pass the certificate to `fyne package -release`
 # Windows Defender still picks it up as a virus.
 #
