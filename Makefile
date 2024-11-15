@@ -62,3 +62,34 @@ package-mac: fyne ruby apple_certificate
 		-profile 'match Direct $(APP_ID)' \
 		-icon Icon.png
 	zip -r download.app.zip download.app
+
+# TODO: Find a way to DRY the -app* flags?
+#
+# Notice -appBuild 1: Windows docs says this should be 0 for store use but fyne requires it to be > 0
+release-windows: fyne
+	# The release command works, but:
+	#
+	# - The exe is not signed
+	# - The appx is installed but does not go anywhere
+	@echo "--- :rocket: Preparing package for release"
+	fyne release \
+		-appID $(APP_ID) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild 1 \
+		-name Download \
+		-os windows \
+		-developer 'CN="Automattic, Inc.", O="Automattic, Inc.", S=California, C=US' \
+		-certificate certificate.pfx \
+		-password $(WINDOWS_CODE_SIGNING_CERT_PASSWORD)
+
+package-windows: fyne
+	# Despite passing the certificate, the exe remains unsigned
+	@echo "--- :rocket: Packaging for distribution"
+	fyne package \
+		-release \
+		-appID $(APP_ID) \
+		-appVersion $(BUILD_VERSION).$(BUILD_TIME) \
+		-appBuild 1 \
+		-name Download \
+		-os windows \
+		-certificate certificate.pfx

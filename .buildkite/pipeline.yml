@@ -1,6 +1,6 @@
 steps:
   # TODO: I doubt we'll keep both package and release commands. But if we do, we could DRY using build matrix.
-  - group: ':mac: macOS'
+  - group: ":mac: macOS"
     steps:
       - label: '"Package" for macOS'
         command: |
@@ -33,3 +33,39 @@ steps:
               context: Release for macOS
         artifact_paths:
           - download.app.zip
+
+  # TODO: I doubt we'll keep both package and release commands. But if we do, we could DRY using build matrix.
+  - group: ":windows: Windows"
+    steps:
+      - label: '"Package" for Windows'
+        command: |
+          .buildkite/prepare-windows.ps1
+          make package-windows
+        notify:
+          - github_commit_status:
+              context: Package for Windows
+        agents:
+          queue: windows
+        plugins:
+          - automattic/a8c-ci-toolkit#mokagio/windows-utils
+        env:
+          BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
+        artifact_paths:
+          - download.exe
+
+      - label: '"Release" for Windows'
+        command: |
+          .buildkite/prepare-windows.ps1
+          make release-windows
+        notify:
+          - github_commit_status:
+              context: Release for Windows
+        agents:
+          queue: windows
+        plugins:
+          - automattic/a8c-ci-toolkit#mokagio/windows-utils
+        env:
+          BUILDKITE_PLUGINS_ALWAYS_CLONE_FRESH: 1
+        artifact_paths:
+          - download.exe
+          - download.appx
