@@ -70,4 +70,4 @@ release-windows: fyne
 		-appBuild 1 \
 		-name Download \
 		-os windows \
-		-certificate certificate.pfx \
+		-certificate certificate.pfx
