@@ -22,7 +22,7 @@ ruby:
 	@echo "--- :ruby: Setting up Ruby tools"
 	bundle install
 
-apple_certificate:
+apple_certificate: ruby
 	@echo "--- :apple: Fetching code signing"
 	bundle exec fastlane configure_code_signing
 
@@ -37,7 +37,7 @@ release:
 	mv fyne-cross/dist/windows-386/download.exe.zip fyne-cross/dist/download-windows-i386.zip
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64 fyne-cross/dist/windows-arm64 fyne-cross/dist/windows-amd64 fyne-cross/dist/windows-386
 
-release-mac: fyne ruby apple_certificate
+release-mac: fyne apple_certificate
 	@echo "--- :rocket: Building for public distribution (fyne release)"
 	fyne release \
 		-appID $(APP_ID) \
@@ -49,7 +49,7 @@ release-mac: fyne ruby apple_certificate
 		-icon Icon.png
 	zip -r download.app.zip download.app
 
-package-mac: fyne ruby apple_certificate
+package-mac: fyne apple_certificate
 	@echo "--- :rocket: Building for public distribution (fyne release)"
 	fyne package \
 		-release \
