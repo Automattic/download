@@ -15,7 +15,7 @@ steps:
     artifact_paths:
       - download.app.zip
 
-  - label: '"Package" for macOS'
+  - label: '"Release" for macOS'
     command:
       install_gems
       make release-mac
