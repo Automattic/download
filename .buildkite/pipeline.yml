@@ -1,0 +1,32 @@
+steps:
+  - label: '"Package" for macOS'
+    command:
+      install_gems
+      make package-mac
+    plugins:
+      - automattic/a8c-ci-toolkit#3.7.1
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: xcode-16.1
+    notify:
+      - github_commit_status:
+          context: Package for macOS
+    artifact_paths:
+      - download.app.zip
+
+  - label: '"Package" for macOS'
+    command:
+      install_gems
+      make release-mac
+    plugins:
+      - automattic/a8c-ci-toolkit#3.7.1
+    agents:
+      queue: mac
+    env:
+      IMAGE_ID: xcode-16.1
+    notify:
+      - github_commit_status:
+          context: Release for macOS
+    artifact_paths:
+      - download.app.zip
