@@ -23,7 +23,7 @@ import './lib/helpers.rb'
 before_all do
   # This is necessary for 'match' to work correctly in CI. When running
   # locally, it has no effect so it's safe to run it before all lanes.
-  setup_ci if runner.current_platform == :ios
+  setup_ci
 
   EnvManager.set_up(env_file_name: 'download.env')
 

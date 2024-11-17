@@ -6,6 +6,17 @@ steps:
         command: |
           source .buildkite/prepare-macos.sh
           make package-mac
+          echo "--- :closed_lock_with_key: Code sign via codesign"
+          set -x
+          codesign \
+            --sign "Developer ID Application: Automattic, Inc. (PZYM8XX95Q)" \
+            --options runtime \
+            --force \
+            --verbose \
+            download.app
+          set +x
+          echo "--- :closed_lock_with_key: Notarize"
+          bundle exec fastlane notarize_app
         plugins:
           - automattic/a8c-ci-toolkit#3.7.1
         agents:
