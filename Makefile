@@ -50,7 +50,7 @@ release-mac: fyne apple_certificate
 	zip -r download.app.zip download.app
 
 package-mac: fyne apple_certificate
-	@echo "--- :rocket: Building for public distribution (fyne release)"
+	@echo "--- :rocket: Building for distribution (fyne package)"
 	fyne package \
 		-release \
 		-os darwin \
