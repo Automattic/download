@@ -53,3 +53,10 @@ package-mac: fyne apple_certificate
 		-profile 'match Direct $(APP_ID)' \
 		-icon Icon.png
 	zip -r download.app.zip download.app
+
+verify_windows_certificate:
+	@echo "--- :windows: Verifying Windows certificate"
+	@if [ ! -f certificate.pfx ]; then \
+		echo "Error: certificate.pfx not found. Please ensure the Windows code signing certificate is present."; \
+		exit 1; \
+	fi
