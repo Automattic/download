@@ -17,6 +17,7 @@ APP_ID=com.automattic.download
 all: release
 
 fyne:
+	@echo "--- :go: Installing Go tools"
 	go install github.com/fyne-io/fyne-cross@latest
 	go install fyne.io/fyne/v2/cmd/fyne@v2.5
 
