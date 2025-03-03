@@ -11,6 +11,10 @@ ruby:
 	@echo "--- :ruby: Setting up Ruby tools"
 	bundle install
 
+apple_certificate: ruby
+	@echo "--- :apple: Fetching code signing"
+	bundle exec fastlane configure_code_signing
+
 release:
 	@rm -rf fyne-cross
 	fyne-cross darwin -app-id com.automattic.download -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
