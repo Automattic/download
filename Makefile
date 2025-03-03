@@ -7,6 +7,10 @@ fyne:
 	go install github.com/fyne-io/fyne-cross@latest
 	go install fyne.io/fyne/v2/cmd/fyne@v2.5
 
+ruby:
+	@echo "--- :ruby: Setting up Ruby tools"
+	bundle install
+
 release:
 	@rm -rf fyne-cross
 	fyne-cross darwin -app-id com.automattic.download -app-version $(BUILD_VERSION).$(BUILD_TIME) -arch=* -pull
