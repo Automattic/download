@@ -14,6 +14,8 @@ BUILD_VERSION=1.$(shell date +%y%m)
 BUILD_TIME=$(shell date +%d%H)
 APP_ID=com.automattic.download
 
+WINDOWS_CODE_SIGNING_CERTIFICATE_PATH=certificate.pfx
+
 all: release
 
 fyne:
@@ -56,7 +58,7 @@ package-mac: fyne apple_certificate
 
 verify_windows_certificate:
 	@echo "--- :windows: Verifying Windows certificate"
-	@if [ ! -f certificate.pfx ]; then \
-		echo "Error: certificate.pfx not found. Please ensure the Windows code signing certificate is present."; \
+	@if [ ! -f $(WINDOWS_CODE_SIGNING_CERTIFICATE_PATH) ]; then \
+		echo "Error: $(WINDOWS_CODE_SIGNING_CERTIFICATE_PATH) not found. Please ensure the Windows code signing certificate is present."; \
 		exit 1; \
 	fi
