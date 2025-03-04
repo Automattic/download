@@ -1,5 +1,5 @@
 steps:
-  - label: '"Package" for macOS'
+  - label: ':macos: Package for macOS'
     command: |
       source .buildkite/prepare-macos.sh
       make package-mac
