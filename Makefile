@@ -40,18 +40,6 @@ release:
 	mv fyne-cross/dist/windows-386/download.exe.zip fyne-cross/dist/download-windows-i386.zip
 	rm -rf fyne-cross/bin fyne-cross/tmp fyne-cross/dist/darwin-amd64 fyne-cross/dist/darwin-arm64 fyne-cross/dist/windows-arm64 fyne-cross/dist/windows-amd64 fyne-cross/dist/windows-386
 
-release-mac: fyne apple_certificate
-	@echo "--- :rocket: Building for public distribution (fyne release)"
-	fyne release \
-		-appID $(APP_ID) \
-		-appVersion $(BUILD_VERSION) \
-		-appBuild $(BUILD_TIME) \
-		-certificate 'Developer ID Application: Automattic, Inc. (PZYM8XX95Q)' \
-		-profile 'match Direct $(APP_ID)' \
-		-category utilities \
-		-icon Icon.png
-	zip -r download.app.zip download.app
-
 package-mac: fyne apple_certificate
 	@echo "--- :rocket: Building for distribution (fyne package)"
 	fyne package \
