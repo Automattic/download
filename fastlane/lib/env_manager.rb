@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Extract this in `release-toolkit`—see https://github.com/Automattic/apps-infra-plans/issues/103
+
 require 'dotenv'
 # TODO: It would be nice to decouple this from Fastlane.
 # To give a good UX in the current use case, however, it's best to access the Fastlane UI methods directly.
