@@ -18,7 +18,6 @@ ASC_API_KEY_ENV_VARS = %w[
 ].freeze
 
 require_relative 'lib/env_manager'
-import './lib/helpers.rb'
 
 before_all do
   # This is necessary for 'match' to work correctly in CI. When running
