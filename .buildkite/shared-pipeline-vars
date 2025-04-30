@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# This file is `source`'d before calling `buildkite-agent pipeline upload`, and can be used
+# to set up some variables that will be interpolated in the `.yml` pipeline before uploading it.
+
+# The ~> modifier is not currently used, but we check for it just in case
+XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
+CI_TOOLKIT_PLUGIN_VERSION='5.3.1'
+
+# FIXME: The -v2 suffix is required only as long as we use the 16.3 image.
+# This if check is here just so that we won't break the build if we forget about the suffix when it comes upgrade time.
+# But if you are reading this and 16.3 is no longer in use, please remove the check and the suffix.
+if [ "$XCODE_VERSION" = "16.3" ]; then
+    export IMAGE_ID="xcode-$XCODE_VERSION-v2"
+else
+    export IMAGE_ID="xcode-$XCODE_VERSION"
+fi
+export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"

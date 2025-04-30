@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Variables used in this pipeline are defined in `shared-pipeline-vars`.
+# Our setup sources the file before calling `buidkite-agent pipeline upload`.
+
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: ':macos: Package for macOS'
+    command: |
+      source .buildkite/prepare-macos.sh
+      make package-mac
+      echo "--- :closed_lock_with_key: Code sign via codesign"
+      set -x
+      codesign \
+        --sign "Developer ID Application: Automattic, Inc. (PZYM8XX95Q)" \
+        --options runtime \
+        --force \
+        --verbose \
+        download.app
+      set +x
+      echo "--- :closed_lock_with_key: Notarize"
+      bundle exec fastlane notarize_app
+    plugins:
+      - $CI_TOOLKIT_PLUGIN
+    agents:
+      queue: mac
+    notify:
+      - github_commit_status:
+          context: Package for macOS
+    artifact_paths:
+      - download.app.zip

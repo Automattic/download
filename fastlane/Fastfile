@@ -1,0 +1,57 @@
+# frozen_string_literal: true
+
+UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
+
+PROJECT_ROOT_FOLDER = File.dirname(File.expand_path(__dir__))
+
+CODE_SIGNING_STORAGE_OPTIONS = {
+  storage_mode: 's3',
+  s3_bucket: 'a8c-fastlane-match',
+  s3_region: 'us-east-2'
+}.freeze
+
+# Required for app_store_connect_api_key to generate the key information to pass down the call chain.
+ASC_API_KEY_ENV_VARS = %w[
+  APP_STORE_CONNECT_API_KEY_KEY_ID
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID
+  APP_STORE_CONNECT_API_KEY_KEY
+].freeze
+
+require_relative 'lib/env_manager'
+
+APP_IDENTIFIER = 'com.automattic.download'
+
+before_all do
+  # This is necessary for 'match' to work correctly in CI. When running
+  # locally, it has no effect so it's safe to run it before all lanes.
+  setup_ci
+
+  EnvManager.set_up(env_file_name: 'download.env')
+
+  # Ensure we use the latest version of the toolkit
+  check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']
+end
+
+lane :configure_code_signing do |readonly: true|
+  EnvManager.require_env_vars!(*ASC_API_KEY_ENV_VARS)
+
+  sync_code_signing(
+    app_identifier: APP_IDENTIFIER,
+    platform: 'macos',
+    type: 'developer_id',
+    api_key: app_store_connect_api_key,
+    team_id: 'PZYM8XX95Q',
+    readonly: readonly,
+    **CODE_SIGNING_STORAGE_OPTIONS
+  )
+end
+
+lane :notarize_app do
+  EnvManager.require_env_vars!(*ASC_API_KEY_ENV_VARS)
+
+  notarize(
+    package: File.join(PROJECT_ROOT_FOLDER, 'Download.app'),
+    api_key: app_store_connect_api_key,
+    print_log: true
+  )
+end
