@@ -15,11 +15,11 @@ steps:
       echo "--- :closed_lock_with_key: Notarize"
       bundle exec fastlane notarize_app
     plugins:
-      - automattic/a8c-ci-toolkit#5.0.0
+      - $CI_TOOLKIT_PLUGIN
     agents:
       queue: mac
     env:
-      IMAGE_ID: xcode-16.1
+      IMAGE_ID: $IMAGE_ID
     notify:
       - github_commit_status:
           context: Package for macOS
