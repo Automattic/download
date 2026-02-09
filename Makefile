@@ -11,7 +11,7 @@
 # Even if we don't currently handle Windows builds from here, we ought to
 # prepare the stage for consistent versioning.
 BUILD_VERSION=1.$(shell date +%y%m)
-BUILD_TIME=$(shell date +%d%H)
+BUILD_TIME=$(shell date +%-d%H)
 APP_ID=com.automattic.download
 
 all: release
