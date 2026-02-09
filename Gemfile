@@ -2,5 +2,5 @@
 
 source 'https://rubygems.org'
 
-gem 'fastlane'
+gem 'fastlane', '~> 2.232'
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 12.3'
