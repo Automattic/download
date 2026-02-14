@@ -32,3 +32,35 @@ steps:
           context: Package for macOS
     artifact_paths:
       - download.app.zip
+
+  # TODO: It's unlikely we'll keep both package and release commands. But if we do, we could DRY using build matrix.
+  - group: ":windows: Windows"
+    steps:
+      - label: ':windows: Package for Windows'
+        command: |
+          .buildkite/prepare-windows.ps1
+          make package-windows
+        notify:
+          - github_commit_status:
+              context: Package for Windows
+        agents:
+          queue: windows
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+        artifact_paths:
+          - download.exe
+
+      - label: ':windows: Release for Windows'
+        command: |
+          .buildkite/prepare-windows.ps1
+          make release-windows
+        notify:
+          - github_commit_status:
+              context: Release for Windows
+        agents:
+          queue: windows
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+        artifact_paths:
+          - download.exe
+          - download.appx
