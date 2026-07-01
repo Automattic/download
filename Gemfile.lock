@@ -128,7 +128,7 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.4.1)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
-    fastlane-plugin-wpmreleasetoolkit (14.8.0)
+    fastlane-plugin-wpmreleasetoolkit (14.9.0)
       buildkit (~> 1.5)
       chroma (= 0.2.0)
       diffy (~> 3.3)
@@ -159,7 +159,7 @@ GEM
     git (1.19.1)
       addressable (~> 2.8)
       rchardet (~> 1.8)
-    google-apis-androidpublisher_v3 (0.103.0)
+    google-apis-androidpublisher_v3 (0.104.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-apis-core (0.18.0)
       addressable (~> 2.5, >= 2.5.1)
@@ -298,7 +298,7 @@ PLATFORMS
 
 DEPENDENCIES
   fastlane (~> 2.236)
-  fastlane-plugin-wpmreleasetoolkit (~> 14.8)
+  fastlane-plugin-wpmreleasetoolkit (~> 14.9)
   openssl (~> 4.0)
 
 BUNDLED WITH
