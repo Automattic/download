@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'fastlane', '~> 2.237'
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 14.10'
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 14.11'
 # To avoid errors like:
 #
 # SSL_connect returned=1 errno=0 peeraddr=3.5.132.155:443 state=error: certificate verify failed (unable to get certificate CRL)
