@@ -16,10 +16,11 @@ APP_ID=com.automattic.download
 
 all: release
 
+# The v2.5 fyne CLI depends on an old golang.org/x/tools that doesn't compile with Go 1.25+
 fyne:
 	@echo "--- :go: Installing Go tools"
 	go install github.com/fyne-io/fyne-cross@latest
-	go install fyne.io/fyne/v2/cmd/fyne@v2.5
+	GOTOOLCHAIN=go1.24.2 go install fyne.io/fyne/v2/cmd/fyne@v2.5
 
 ruby:
 	@echo "--- :ruby: Setting up Ruby tools"

@@ -323,4 +323,4 @@ DEPENDENCIES
   openssl (~> 4.0)
 
 BUNDLED WITH
-   2.6.5
+  4.0.22
